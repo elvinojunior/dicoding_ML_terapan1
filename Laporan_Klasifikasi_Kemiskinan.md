@@ -120,62 +120,128 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 ---
 
 ## Modeling
+Algoritma pada proyek ini melakukan pemodelan dengan 3 algoritma, yaitu:
 
-### **Model yang digunakan:**
-- **Decision Tree Classifier**  
-- **Random Forest Classifier**  
+### **K-Nearest Neighbour**  
+Model pertama yang digunakan yaitu algoritma K-Nearest Neighbour (KNN), yang mengklasifikasikan label dari sebuah data baru berdasarkan label dari K data tetangga terdekatnya dalam ruang fitur. Kedekatan antar data diukur menggunakan jarak, umumnya Euclidean.
 
-### **Parameter:**
-- **Decision Tree:** default  
-- **Random Forest:**  
-  - `n_estimators = 100`  
-  - `max_depth = 10`  
-  - `min_samples_split = 5`  
-  - `random_state = 42`  
+Parameter yang digunakan yaitu :
+-  `n_neighbors` jumlah tetangga terdekat yang digunakan untuk menentukan kelas prediksi. Dalam proyek ini ditentukan sebanyak 5 tetangga.
+  
+Kelebihan:
+- Mudah dipahami dan diimplementasikan.
+- Cocok untuk dataset skala kecil hingga menengah.
+- Tidak memerlukan proses training yang kompleks.
 
-**Improvement:**  
-Hyperparameter tuning Random Forest dengan GridSearchCV:
-- `n_estimators = [50, 100, 150]`  
-- `max_depth = [5, 10, 20]`  
-- `min_samples_split = [2, 5, 10]`  
+Kekurangan:
+- Proses prediksi lambat pada dataset besar karena harus menghitung jarak ke seluruh data latih.
+- Sensitif terhadap skala fitur (perlu scaling).
+- Rentan terhadap outlier dan noise.
 
-### **Hasil:**  
-Model Random Forest terbaik dengan parameter:
-- `n_estimators=150, max_depth=20, min_samples_split=5`
+### **Decision Tree Classifier**
+Model kedua yaitu Decision Tree Classifier, algoritma supervised learning yang dapat digunakan untuk tugas klasifikasi maupun regresi. Model ini bekerja dengan membangun struktur pohon di mana tiap node internal merepresentasikan fitur, tiap cabang merepresentasikan aturan keputusan, dan tiap leaf node berisi hasil akhir klasifikasi.
 
-### **Kelebihan & Kekurangan:**
-- Decision Tree: cepat, mudah interpretasi, tapi overfitting  
-- Random Forest: akurat, tahan overfitting, tapi lebih lambat  
+Parameter yang digunakan yaitu
+- `max_depth` kedalaman maksimum pohon keputusan untuk menghindari overfitting. Dalam proyek ini diatur maksimal 3.
 
----
+Kelebihan:
+- Mudah dipahami dan divisualisasikan.
+- Dapat menangani data numerik maupun kategorikal tanpa perlu normalisasi.
+- Dapat mengukur pentingnya tiap fitur (feature importance).
+
+Kekurangan:
+- Rentan terhadap overfitting jika tidak dibatasi kedalamannya.
+- Performa bisa kurang stabil jika dataset kecil atau banyak noise.
+- Cenderung bias ke fitur dengan banyak nilai unik.
+
+### **Random Forest Classifier**  
+Model ketiga adalah Random Forest, sebuah algoritma ensemble learning berbasis Decision Tree. Random Forest membangun banyak pohon keputusan secara acak dan independen, lalu menggabungkan prediksinya melalui voting (untuk klasifikasi) atau rata-rata (untuk regresi). Konsep utamanya, "kerumunan pohon yang lemah bisa menjadi hutan yang kuat."
+
+Parameter yang digunakan yaitu
+- `max_depth` kedalaman maksimum masing-masing pohon dalam hutan, untuk mencegah overfitting. Dalam proyek ini diatur maksimal 3.
+
+Kelebihan:
+- Lebih stabil dan akurat dibanding single Decision Tree.
+- Mampu mengatasi overfitting karena melakukan averaging dari banyak model.
+- Bisa mengukur feature importance.
+- Tahan terhadap outlier dan noise.
+
+Kekurangan:
+- Proses training dan prediksi lebih lambat karena banyaknya pohon yang dibuat.
+- Model cenderung sulit diinterpretasi karena kompleksitas ensemble.
+- Membutuhkan lebih banyak resource memori dan komputasi.
+
+
 
 ## Evaluation
+Dalam tahap evaluasi, metrik yang digunakan adalah
 
-**Metrik:**
-- **Accuracy**  
-- **Precision**  
-- **Recall**  
-- **F1-Score**  
+- **Mean Squared Error (MSE)**
 
-**Formula:**
-```
-Precision = TP / (TP+FP)
-Recall = TP / (TP+FN)
-F1 = 2 * (Precision * Recall) / (Precision + Recall)
-```
+$$\text{Mean Squared Error (MSE)} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
+
+
+- **Accuracy**
+
+$$\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}$$
+
+
+- **Precision**
+
+$$\text{Precision} = \frac{TP}{TP + FP}$$
+
+
+- **Recall**
+
+$$\text{Recall} = \frac{TP}{TP + FN}$$
+
+
+- **F1-Score**
+
+$$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
+
+*Penjelasan*
+- TP (True Positive): Jumlah data positif yang diprediksi dengan benar sebagai positif.
+- TN (True Negative): Jumlah data negatif yang diprediksi dengan benar sebagai negatif.
+- FP (False Positive): Jumlah data negatif yang diprediksi secara tidak benar sebagai positif (Kesalahan Tipe I).
+- FN (False Negative): Jumlah data positif yang diprediksi secara tidak benar sebagai negatif (Kesalahan Tipe II).
+
+
 
 **Hasil akhir:**
 
-| Model            | Accuracy | Precision | Recall | F1-Score |
-|:----------------|:----------|:-----------|:---------|:------------|
-| K-Nearest Neighbour    | 91.7% | 91%        | 92%      | 91%     |
-| Decision Tree    | 84.5%     | 83%        | 85%      | 84%         |
-| Random Forest    |   91.7%   | 91%        | 92%      | 91%     |
+| Metrik    | KNN   | Decision Tree | Random Forest |
+| --------- | ----- | ------------- | ------------- |
+| Train MSE | 1.64  | **0.45**      | 3.42          |
+| Test MSE  | 7.78  | **2.22**      | 3.33          |
+| Accuracy  | 92.22 | **97.78**     | 96.67         |
+| F1-Score  | 93.25 | **97.92**     | 96.97         |
+
+**Classification Report:**
+
+![classification_report](https://github.com/user-attachments/assets/7f0f2993-a6a9-4a76-ae4a-bf585934a4bf)
+
+
 
 **Kesimpulan:**  
-Random Forest dengan hyperparameter tuning dipilih sebagai model terbaik karena performa akurasi dan F1-score paling tinggi.
+
+Model Decision Tree Classifier dipilih sebagai model terbaik karena:
+- Mempunyai accuracy dan F1-score tertinggi.
+- Recall 100% untuk kelas minoritas.
+- Test MSE paling kecil (2.22%).
 
 ---
+**Referensi**
+1. Badan Pusat Statistik. (2024, Juli 1). *Persentase Penduduk Miskin Maret 2024 Turun Menjadi 9,03 Persen*. Diakses dari [https://www.bps.go.id/id/pressrelease/2024/07/01/2370/persentase-penduduk-miskin-maret-2024-turun-menjadi-9-03-persen-.html](https://www.bps.go.id/id/pressrelease/2024/07/01/2370/persentase-penduduk-miskin-maret-2024-turun-menjadi-9-03-persen-.html)
 
+2. Obeid, N., Aljarah, I., & Faris, H. (2021). *Poverty Classification Using Machine Learning: The Case of Jordan*. Diakses dari [https://www.researchgate.net/publication/348898452\_Poverty\_Classification\_Using\_Machine\_Learning\_The\_Case\_of\_Jordan](https://www.researchgate.net/publication/348898452_Poverty_Classification_Using_Machine_Learning_The_Case_of_Jordan)
+
+3. Subramanian, D. (2019, November 3). *A Simple Introduction to K-Nearest Neighbors Algorithm*. Towards Data Science. Diakses dari [https://towardsdatascience.com/a-simple-introduction-to-k-nearest-neighbors-algorithm-b3519ed98e](https://towardsdatascience.com/a-simple-introduction-to-k-nearest-neighbors-algorithm-b3519ed98e)
+
+4. IBM. (n.d.). *What are Decision Trees?*. Diakses dari [https://www.ibm.com/think/topics/decision-trees](https://www.ibm.com/think/topics/decision-trees)
+
+5. Wood, T. (n.d.). *What is a Random Forest?*. DeepAI. Diakses dari [https://deepai.org/machine-learning-glossary-and-terms/random-forest](https://deepai.org/machine-learning-glossary-and-terms/random-forest)
+
+---
 **Catatan:**  
-EDA visualisasi, confusion matrix, dan proses training dapat dilihat langsung di notebook terlampir.
+EDA visualisasi, Data Cleaning & Preprocessing ,Confusion Matrix, dan proses training dapat dilihat langsung di notebook terlampir.
