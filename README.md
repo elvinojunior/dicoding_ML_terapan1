@@ -70,6 +70,12 @@ Distribusi tingkat pengangguran juga bersifat positif skewed, dengan mayoritas k
 - Distribusi Klasifikasi Kemiskinan (klasifikasi_kemiskinan)
 Distribusi target klasifikasi_kemiskinan sangat imbalance, di mana sebagian besar data diklasifikasikan sebagai tidak miskin (label 0), sedangkan label miskin (label 1) jumlahnya jauh lebih sedikit. Hal ini menunjukkan ketidakseimbangan kelas yang perlu diperhatikan saat pemodelan.
 
+Distribusi kolom kategorik
+![gambar1b](https://github.com/user-attachments/assets/3b9a0b9a-567f-48aa-afd3-9d9764fc58c7)
+Distribusi data pada kolom provinsi : 
+-   Data dengan sedikit kontribusi ada di provinsi DKI Jakarta
+-   Kontibusi data paling banyak ada di provinsi Jawa Timur
+
 ### EDA Multivariate:
 - Klasifikasi Kemiskinan antar provinsi
 ![gambar2a](https://github.com/user-attachments/assets/a5ee2199-bfb8-47e9-98d2-25951a772a77)
@@ -180,23 +186,15 @@ Dalam tahap evaluasi, metrik yang digunakan adalah
 
 $$\text{Mean Squared Error (MSE)} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
 
-
 - **Accuracy**
 
 $$\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}$$
 
-
-- **Precision**
-
+- **F1-Score**
+  
 $$\text{Precision} = \frac{TP}{TP + FP}$$
 
-
-- **Recall**
-
 $$\text{Recall} = \frac{TP}{TP + FN}$$
-
-
-- **F1-Score**
 
 $$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
 
@@ -217,17 +215,11 @@ $$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{
 | Accuracy  | 92.22 | **97.78**     | 96.67         |
 | F1-Score  | 93.25 | **97.92**     | 96.97         |
 
-**Classification Report:**
-
-![classification_report](https://github.com/user-attachments/assets/7f0f2993-a6a9-4a76-ae4a-bf585934a4bf)
-
-
 
 **Kesimpulan:**  
 
 Model Decision Tree Classifier dipilih sebagai model terbaik karena:
 - Mempunyai accuracy dan F1-score tertinggi.
-- Recall 100% untuk kelas minoritas.
 - Test MSE paling kecil (2.22%).
 
 ---
