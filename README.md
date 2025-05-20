@@ -42,7 +42,9 @@ Beberapa penelitian menunjukkan potensi machine learning dalam klasifikasi statu
 Dataset yang digunakan berasal dari [Kaggle - Klasikasi Kemiskinan](https://www.kaggle.com/datasets/ermila/klasifikasi-kemiskinan), yang berisi data sosial-ekonomi di Indonesia.
 
 **Jumlah data:** 514 baris  
-**Jumlah fitur:** 7 kolom  
+**Jumlah fitur:** 7 kolom
+**Missing Values** : 0
+**Duplicate Values** : 0
 
 ### Deskripsi Variable:
 - `Provinsi` : Nama provinsi asal data
@@ -110,7 +112,7 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 ### **Tahapan:**
 - Handling missing values: tidak ditemukan missing values
 - Handling duplicate values: tidak ditemukan adanya duplicate values
-- Handling Outlier: dilakukan untuk mengurangi pengaruh data ekstrem yang bisa memengaruhi akurasi model, terutama pada algoritma yang sensitif terhadap nilai outlier seperti Decision Tree dan Random Forest.
+- Handling Outlier: dilakukan menggunakan teknik IQR Method untuk mengurangi pengaruh data ekstrem yang bisa memengaruhi akurasi model, terutama pada algoritma yang sensitif terhadap nilai outlier seperti Decision Tree dan Random Forest.
 - One Hot Encoding untuk kolom provinsi: karena provinsi merupakan data kategorikal, sehingga perlu diubah menjadi representasi numerik biner agar dapat diproses oleh model.
 - Data scaling: menggunakan StandardScaler untuk menstandarkan skala fitur numerik sehingga memiliki distribusi mean 0 dan standard deviasi 1. Ini penting karena model tertentu sensitif terhadap perbedaan skala fitur.
 - Oversampling SMOTE pada data latih (train): untuk menangani ketidakseimbangan kelas (class imbalance), sehingga jumlah data pada kelas minoritas (label 1 = miskin) diseimbangkan dengan kelas mayoritas. Hal ini dapat meningkatkan sensitivitas model dalam mendeteksi kelas minoritas.
