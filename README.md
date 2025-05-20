@@ -125,7 +125,7 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 
 ---
 
-## Modeling
+## Model Development
 Algoritma pada proyek ini melakukan pemodelan dengan 3 algoritma, yaitu:
 
 ### **K-Nearest Neighbour**  
