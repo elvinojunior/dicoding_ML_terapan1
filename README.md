@@ -42,9 +42,9 @@ Beberapa penelitian menunjukkan potensi machine learning dalam klasifikasi statu
 Dataset yang digunakan berasal dari [Kaggle - Klasikasi Kemiskinan](https://www.kaggle.com/datasets/ermila/klasifikasi-kemiskinan), yang berisi data sosial-ekonomi di Indonesia.
 
 **Jumlah data:** 514 baris  
-**Jumlah fitur:** 7 kolom
-**Missing Values** : 0
-**Duplicate Values** : 0
+**Jumlah fitur:** 7 kolom  
+**Missing Values** : 0  
+**Duplicate Values** : 0  
 
 ### Deskripsi Variable:
 - `Provinsi` : Nama provinsi asal data
@@ -119,7 +119,7 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 - Data split: membagi data menjadi 80% untuk train dan 20% untuk test agar model dapat dilatih dan dievaluasi secara fair tanpa data leakage.
 
 **Alasan:**  
-- Data cleaning (missing values, duplicate, outlier) dilakukan untuk memastikan kualitas data yang digunakan sudah bersih dan relevan untuk proses training model.
+- Data cleaning (handling outlier) dilakukan untuk memastikan kualitas data yang digunakan sudah bersih dan relevan untuk proses training model.
 - Encoding kategori diperlukan karena algoritma machine learning hanya dapat memproses data numerik.
 - Scaling memastikan distribusi fitur numerik seragam dan mencegah dominasi fitur dengan skala besar terhadap model.
 - Oversampling SMOTE membantu mengatasi masalah ketidakseimbangan kelas yang berpotensi membuat model bias ke kelas mayoritas.
@@ -200,7 +200,7 @@ $$\text{Recall} = \frac{TP}{TP + FN}$$
 
 $$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
 
-*Penjelasan*
+Penjelasan
 - TP (True Positive): Jumlah data positif yang diprediksi dengan benar sebagai positif.
 - TN (True Negative): Jumlah data negatif yang diprediksi dengan benar sebagai negatif.
 - FP (False Positive): Jumlah data negatif yang diprediksi secara tidak benar sebagai positif (Kesalahan Tipe I).
@@ -220,9 +220,9 @@ $$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{
 
 **Kesimpulan:**  
 
-Model Decision Tree Classifier dipilih sebagai model terbaik karena:
-- Mempunyai accuracy dan F1-score tertinggi.
-- Test MSE paling kecil (2.22%).
+Proyek ini berhasil membangun model machine learning yang efektif untuk memprediksi status kemiskinan masyarakat berdasarkan data sosial-ekonomi. Dengan menggunakan algoritma K-Nearest Neighbour, Decision Tree, dan Random Forest, model yang dihasilkan menunjukkan performa yang baik, terutama Decision Tree yang mencapai akurasi 97.78% dan F1-Score 97.92%.
+
+Hasil ini menunjukkan bahwa model dapat membantu pemerintah dalam mengidentifikasi masyarakat miskin dengan lebih tepat, sehingga program bantuan sosial dapat lebih tepat sasaran. Dengan demikian, proyek ini sejalan dengan tujuan untuk meningkatkan kesejahteraan masyarakat dan mendukung perencanaan kebijakan yang lebih efektif.
 
 ---
 **Referensi**
