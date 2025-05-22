@@ -240,7 +240,7 @@ Penjelasan
 Berdasarkan hasil analisis dan pemodelan yang telah dilakukan, diperoleh beberapa temuan utama terkait Klasifikasi status kemiskinan :
 
 1. Pemanfaatan Machine Learning untuk Prediksi Kemiskinan
-  Model machine learning dapat dimanfaatkan secara efektif untuk memprediksi status kemiskinan masyarakat berdasarkan variabel sosial-ekonomi seperti persentase kemiskinan kota, pengeluaran per kapita, IPM, dan tingkat pengangguran. Hasil model menunjukkan adanya pola yang dapat digunakan untuk memisahkan kategori miskin dan tidak miskin.
+  Model machine learning dapat dimanfaatkan secara efektif untuk Klasifikasi status kemiskinan masyarakat berdasarkan variabel sosial-ekonomi seperti persentase kemiskinan kota, pengeluaran per kapita, IPM, dan tingkat pengangguran. Hasil model menunjukkan adanya pola yang dapat digunakan untuk memisahkan kategori miskin dan tidak miskin.
 
 2. Algoritma Machine Learning yang Paling Efektif
   Dari tiga algoritma baseline yang diuji, yaitu K-Nearest Neighbour, Decision Tree, dan Random Forest, model Decision Tree menunjukkan performa paling stabil dan unggul dalam hal accuracy, precision, recall, dan F1-score. Model ini mampu menangani ketidakseimbangan data lebih baik, apalagi setelah diterapkan SMOTE (Synthetic Minority Oversampling Technique).
