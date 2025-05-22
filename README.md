@@ -20,19 +20,19 @@ Beberapa penelitian menunjukkan potensi machine learning dalam klasifikasi statu
 ### Problem Statements
 - Bagaimana memanfaatkan machine learning untuk memprediksi status kemiskinan masyarakat berdasarkan data sosial-ekonomi?  
 - Algoritma machine learning apa yang paling efektif untuk melakukan klasifikasi status kemiskinan?  
-- Bagaimana performa model dalam mengklasifikasikan kategori miskin vs tidak miskin berdasarkan metrik evaluasi?
+- Bagaimana penerapan performa model dalam menangani ketidakseimbangan kelas(class imbalance) pada Klasifikasi status kemiskinan?
 - Fitur-fitur apa saja yang paling berpengaruh terhadap status kemiskinan menurut hasil analisis dan pemodelan?  
 
 ### Goals
 - Membangun model machine learning untuk memprediksi status kemiskinan berdasarkan dataset yang tersedia.  
 - Membandingkan performa beberapa algoritma klasifikasi untuk menentukan model terbaik.  
-- Mengukur performa model menggunakan metrik klasifikasi yang sesuai.
+- Mampu meningkatkan performa model dengan mengatasi ketidakseimbangan kelas(class imbalance).
 - Melakukan Exploratory Data Analysis untuk melihat fitur fitur paling penting.
 
 ### Solution statements
-- Menerapkan algoritma **K-Nearest Neighbour**, **Decision Tree**, dan **Random Forest** sebagai baseline model untuk klasifikasi kemiskinan.  
-- Melakukan **Oversampling SMOTE** untuk mengatasi class minoritas dan meningkatkan performa baseline.  
-- Memilih model terbaik berdasarkan metrik evaluasi **accuracy**, **precision**, **recall**, **mse**, dan **F1-score**.
+- Menerapkan algoritma **K-Nearest Neighbour**, **Decision Tree**, dan **Random Forest** sebagai baseline model untuk klasifikasi kemiskinan.   
+- Memilih model terbaik berdasarkan metrik evaluasi **accuracy**, **precision**, **recall**, dan **F1-score**.
+- Melakukan **Oversampling SMOTE** untuk mengatasi ketidakseimbangan kelas(class imbalance) dan meningkatkan performa baseline. 
 - Menerapkan Analisis Visual secara Univariate dan Multivariate. 
 
 ---
@@ -43,8 +43,10 @@ Dataset yang digunakan berasal dari [Kaggle - Klasikasi Kemiskinan](https://www.
 
 **Jumlah data:** 514 baris  
 **Jumlah fitur:** 7 kolom  
-**Missing Values** : 0  
-**Duplicate Values** : 0  
+**Struktur dataset** :
+![struktur_dataset](https://github.com/user-attachments/assets/0ec72ca6-6bb1-49ad-b975-8656ed15e046)
+
+
 
 ### Deskripsi Variable:
 - `Provinsi` : Nama provinsi asal data
@@ -53,7 +55,7 @@ Dataset yang digunakan berasal dari [Kaggle - Klasikasi Kemiskinan](https://www.
 - `Pengeluaran per Kapita Disesuaikan (Ribu Rupiah/Orang/Tahun)` : Jumlah pengeluaran per orang per tahun
 - `Indeks Pembangunan Manusia` : Nilai IPM daerah tersebut
 - `Tingkat Pengangguran Terbuka` : Persentase pengangguran terbuka di wilayah tersebut
-- `Klasifikasi Kemiskinan` : Label target (0 = Tidak Miskin, 1 = Miskin)  
+- `Klasifikasi Kemiskinan` : Label target (0 = Tidak Miskin, 1 = Miskin) 
 
 ### EDA Univariate:
 Distribusi histogram fitur numerik
@@ -110,7 +112,16 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 ## Data Preparation
 
 ### **Tahapan:**
-- Handling missing values: tidak ditemukan missing values
+- Mengganti nama kolom :
+   + `Provinsi` : `provinsi`
+   + `Kab/Kota` : `kab/kota`
+   + `Persentase Penduduk Miskin (P0) Menurut Kabupaten/Kota (Persen)` : `persen_kemiskinan_kota`
+   + `Pengeluaran per Kapita Disesuaikan (Ribu Rupiah/Orang/Tahun)` : `pengeluaran_kapita(ribu/tahun)`
+   + `Indeks Pembangunan Manusia` : `IPM`
+   + `Tingkat Pengangguran Terbuka` : `tingkat_pengangguran`
+   + `Klasifikasi Kemiskinan` : `klasifikasi_kemiskinan`
+- Mengubah tipe data pada kolom `persen_kemiskinan_kota`, `IPM`, `tingkat_pengangguran` menjadi numerik (Float)   
+- Handling missing values: tidak ditemukan adanya missing values
 - Handling duplicate values: tidak ditemukan adanya duplicate values
 - Handling Outlier: dilakukan menggunakan teknik IQR Method untuk mengurangi pengaruh data ekstrem yang bisa memengaruhi akurasi model, terutama pada algoritma yang sensitif terhadap nilai outlier seperti Decision Tree dan Random Forest.
 - One Hot Encoding untuk kolom provinsi: karena provinsi merupakan data kategorikal, sehingga perlu diubah menjadi representasi numerik biner agar dapat diproses oleh model.
@@ -119,11 +130,14 @@ Beberapa provinsi terlihat memiliki batang kategori "0" yang jauh lebih tinggi d
 - Data split: membagi data menjadi 80% untuk train dan 20% untuk test agar model dapat dilatih dan dievaluasi secara fair tanpa data leakage.
 
 **Alasan:**  
-- Data cleaning (handling outlier) dilakukan untuk memastikan kualitas data yang digunakan sudah bersih dan relevan untuk proses training model.
-- Encoding kategori diperlukan karena algoritma machine learning hanya dapat memproses data numerik.
-- Scaling memastikan distribusi fitur numerik seragam dan mencegah dominasi fitur dengan skala besar terhadap model.
-- Oversampling SMOTE membantu mengatasi masalah ketidakseimbangan kelas yang berpotensi membuat model bias ke kelas mayoritas.
-- Data split menjaga keadilan evaluasi model dengan memisahkan data pelatihan dan pengujian.
+- Mengganti nama kolom dilakukan untuk memudahkan proses eksplorasi, analisis, dan pemodelan karena nama kolom yang ringkas, konsisten, dan mudah dipanggil dapat mengurangi potensi error saat coding
+- Mengubah tipe data agar data numerik dapat digunakan dalam perhitungan statistik, visualisasi, serta sebagai input model machine learning yang hanya menerima data numerik untuk operasi matematis.
+- Handling missing values diperiksa untuk memastikan tidak ada data kosong yang dapat mengganggu hasil model atau analisis.
+- Handling duplicate values diperiksa agar tidak ada duplikasi data yang bisa membuat bobot informasi menjadi tidak proporsional.
+- Handling Outlier (IQR Method) dilakukan untuk mengurangi pengaruh data ekstrem yang bisa mendistorsi parameter model, terutama untuk algoritma berbasis pohon (Decision Tree, Random Forest) yang cukup sensitif terhadap outlier. Dengan membersihkan outlier, model bisa lebih stabil dan akurat.
+- One Hot Encoding untuk kolom kategorikal (provinsi) Karena algoritma machine learning tidak dapat memproses data kategorikal dalam format string, maka perlu diubah menjadi format numerik biner agar bisa diproses dengan benar.
+- Data Scaling (StandardScaler) penting untuk model-model seperti K-Nearest Neighbour dan algoritma berbasis jarak lainnya, di mana perbedaan skala antar fitur bisa menyebabkan fitur dengan rentang nilai lebih besar mendominasi hasil model.
+- Oversampling dengan SMOTE pada data latih dilakukan untuk menangani class imbalance yang bisa membuat model cenderung bias ke kelas mayoritas. Dengan menyeimbangkan jumlah data minoritas, model bisa lebih sensitif dalam mendeteksi kategori miskin. SMOTE hanya diterapkan ke data training, agar evaluasi di data testing tetap mencerminkan kondisi nyata dari distribusi data asli.
 
 ---
 
@@ -150,7 +164,8 @@ Kekurangan:
 Model kedua yaitu Decision Tree Classifier, algoritma supervised learning yang dapat digunakan untuk tugas klasifikasi maupun regresi. Model ini bekerja dengan membangun struktur pohon di mana tiap node internal merepresentasikan fitur, tiap cabang merepresentasikan aturan keputusan, dan tiap leaf node berisi hasil akhir klasifikasi.
 
 Parameter yang digunakan yaitu
-- `max_depth` kedalaman maksimum pohon keputusan untuk menghindari overfitting. Dalam proyek ini diatur maksimal 3.
+- `random_state` digunakan untuk memastikan bahwa proses yang bersifat acak (seperti pemilihan subset data dan pemilihan fitur saat membangun node) akan menghasilkan hasil yang sama setiap kali kode dijalankan. Dalam proyek ini diatur sebanyak 42
+- `max_depth` kedalaman maksimum masing-masing pohon dalam hutan, untuk mencegah overfitting. Dalam proyek ini diatur maksimal 3.
 
 Kelebihan:
 - Mudah dipahami dan divisualisasikan.
@@ -166,6 +181,7 @@ Kekurangan:
 Model ketiga adalah Random Forest, sebuah algoritma ensemble learning berbasis Decision Tree. Random Forest membangun banyak pohon keputusan secara acak dan independen, lalu menggabungkan prediksinya melalui voting (untuk klasifikasi) atau rata-rata (untuk regresi). Konsep utamanya, "kerumunan pohon yang lemah bisa menjadi hutan yang kuat."
 
 Parameter yang digunakan yaitu
+- `random_state` digunakan untuk memastikan bahwa proses yang bersifat acak (seperti pemilihan subset data dan pemilihan fitur saat membangun pohon-pohon) akan menghasilkan hasil yang sama setiap kali kode dijalankan. Dalam proyek ini diatur sebanyak 42
 - `max_depth` kedalaman maksimum masing-masing pohon dalam hutan, untuk mencegah overfitting. Dalam proyek ini diatur maksimal 3.
 
 Kelebihan:
@@ -184,19 +200,19 @@ Kekurangan:
 ## Evaluation
 Dalam tahap evaluasi, metrik yang digunakan adalah
 
-- **Mean Squared Error (MSE)**
-
-$$\text{Mean Squared Error (MSE)} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
-
 - **Accuracy**
 
 $$\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}$$
 
-- **F1-Score**
+- **Precision**
   
 $$\text{Precision} = \frac{TP}{TP + FP}$$
 
+- **Recall**
+
 $$\text{Recall} = \frac{TP}{TP + FN}$$
+
+- **F1-Score**
 
 $$\text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$$
 
@@ -210,19 +226,30 @@ Penjelasan
 
 **Hasil akhir:**
 
-| Metrik    | KNN   | Decision Tree | Random Forest |
-| --------- | ----- | ------------- | ------------- |
-| Train MSE | 1.64  | **0.45**      | 3.42          |
-| Test MSE  | 7.78  | **2.22**      | 3.33          |
-| Accuracy  | 92.22 | **97.78**     | 96.67         |
-| F1-Score  | 93.25 | **97.92**     | 96.97         |
+| Metric        | KNN (%) | Decision Tree (%) | Random Forest (%) |
+| ------------- | :------ | :---------------- | :---------------- |
+| **Accuracy**  | 92.22   | 97.78             | 96.67             |
+| **Precision** | 45.45   | 75.00             | 66.67             |
+| **Recall**    | 83.33   | 100.00            | 100.00            |
+| **F1 Score**  | 93.25   | 97.92             | 96.97             |
+
 
 
 **Kesimpulan:**  
 
-Proyek ini berhasil membangun model machine learning yang efektif untuk memprediksi status kemiskinan masyarakat berdasarkan data sosial-ekonomi. Dengan menggunakan algoritma K-Nearest Neighbour, Decision Tree, dan Random Forest, model yang dihasilkan menunjukkan performa yang baik, terutama Decision Tree yang mencapai akurasi 97.78% dan F1-Score 97.92%.
+Berdasarkan hasil analisis dan pemodelan yang telah dilakukan, diperoleh beberapa temuan utama terkait Klasifikasi status kemiskinan :
 
-Hasil ini menunjukkan bahwa model dapat membantu pemerintah dalam mengidentifikasi masyarakat miskin dengan lebih tepat, sehingga program bantuan sosial dapat lebih tepat sasaran. Dengan demikian, proyek ini sejalan dengan tujuan untuk meningkatkan kesejahteraan masyarakat dan mendukung perencanaan kebijakan yang lebih efektif.
+1. Pemanfaatan Machine Learning untuk Prediksi Kemiskinan
+  Model machine learning dapat dimanfaatkan secara efektif untuk memprediksi status kemiskinan masyarakat berdasarkan variabel sosial-ekonomi seperti persentase kemiskinan kota, pengeluaran per kapita, IPM, dan tingkat pengangguran. Hasil model menunjukkan adanya pola yang dapat digunakan untuk memisahkan kategori miskin dan tidak miskin.
+
+2. Algoritma Machine Learning yang Paling Efektif
+  Dari tiga algoritma baseline yang diuji, yaitu K-Nearest Neighbour, Decision Tree, dan Random Forest, model Decision Tree menunjukkan performa paling stabil dan unggul dalam hal accuracy, precision, recall, dan F1-score. Model ini mampu menangani ketidakseimbangan data lebih baik, apalagi setelah diterapkan SMOTE (Synthetic Minority Oversampling Technique).
+
+3. Performa Model setelah Oversampling SMOTE
+  Penerapan SMOTE berhasil meningkatkan performa model secara signifikan, khususnya dalam hal recall untuk kategori miskin yang sebelumnya menjadi class minoritas. Hal ini menunjukkan bahwa teknik oversampling efektif mengatasi ketidakseimbangan kelas dalam dataset.
+
+4. Fitur-Fitur yang Paling Berpengaruh
+  Hasil Exploratory Data Analysis (EDA) dan analisis korelasi menunjukkan bahwa fitur **persentase kemiskinan kota** memiliki korelasi paling kuat terhadap status kemiskinan. Disusul oleh pengeluaran per kapita dan IPM yang memiliki hubungan signifikan terhadap klasifikasi kemiskinan. Sebaliknya, tingkat pengangguran memiliki pengaruh yang relatif kecil.
 
 ---
 **Referensi**
