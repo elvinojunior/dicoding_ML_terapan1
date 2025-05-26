@@ -268,5 +268,5 @@ Berdasarkan hasil analisis dan pemodelan yang telah dilakukan, diperoleh beberap
 EDA visualisasi, Data Cleaning & Preprocessing ,Confusion Matrix, dan proses training dapat dilihat langsung di notebook terlampir.
 Nilai yang didapat : 
 
-![image](https://github.com/user-attachments/assets/df542171-e449-4f5d-89de-ed5f26979bda)
+![image](https://github.com/user-attachments/assets/40176b47-62d5-4153-8d0a-a00f165437bb)
 
